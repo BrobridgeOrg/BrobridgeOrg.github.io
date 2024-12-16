@@ -15,72 +15,38 @@
 const sidebars = {
   // By default, Docusaurus generates a sidebar from the docs folder structure
     docSidebar: [
-    'en/why-gravity',
-    'en/core-concepts',
-    'en/quickstart',
+    'why-gravity',
+    'core-concepts',
+    'quickstart',
     {
       type: 'category',
       label: 'Installation Guide',
       items: [
-        'en/install_guide/requirements',
-        'en/install_guide/env',
-        'en/install_guide/install_k8',
-        'en/install_guide/deployment',
-        'en/install_guide/atomic_guide',
+        'install_guide/requirements',
+        'install_guide/env',
+        'install_guide/install_k8',
+        'install_guide/deployment',
+        'install_guide/atomic_guide',
       ],
     },
     ],
     apiSidebar: [
+        'api/general',
         {
-            type: 'category',
-            label: 'API documentation',
-            items: [
-                {
-                    type: 'doc',
-                    id: 'en/api/general',
-                    label: 'API guidelines'
-                },
-                {
-                    type: 'doc',
-                    id: 'en/api/gravity-sdk',
-                    label: 'Gravity SDK'
-                },
-                {
-                    type: 'doc',
-                    id: 'en/api/graviton',
-                    label: 'Graviton'
-                }
-            ]
+          type: 'category',
+          label: 'Gravity-SDK',
+          items: [
+            'api/sdk/overview',
+          ],
+        },
+        'api/graviton',
 
-        }
     ],
     faqSidebar: [
-        {
-            type: 'category',
-            label: 'Frequently Asked Questions',
-            items: [
-                {
-                    type: 'doc',
-                    id: 'en/faq/general',
-                    label: 'General Questions'
-                },
-                {
-                    type: 'doc',
-                    id: 'en/faq/technical',
-                    label: 'Technical Questions'
-                },
-                {
-                    type: 'doc',
-                    id: 'en/faq/troubleshooting',
-                    label: 'Troubleshooting'
-                },
-                {
-                    type: 'doc',
-                    id: 'en/faq/gravity-portal',
-                    label: 'Gravity Portal'
-                }
-            ]
-        }
+        'faq/general',
+        'faq/gravity-cli',
+        'faq/gravity-portal',
+        'faq/troubleshooting',
     ]
   // You can create another sidebar manually if needed
     //

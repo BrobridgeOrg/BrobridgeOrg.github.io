@@ -33,9 +33,21 @@ const sidebars = {
       type: 'category',
       label: 'Configurations',
       items: [
-          'config/adapter-config',
+          {
+              type: 'category',
+              label: 'Adapter Configurations',
+              items:[
+                  'config/adapter-config/psql',
+                  'config/adapter-config/mssql',
+                  'config/adapter-config/oracle',
+                  'config/adapter-config/mysql',
+                  'config/adapter-config/mongodb',
+                  'config/adapter-config/informix',
+                  'config/adapter-config/ogg',
+              ],
+          },
           'config/dispatcher-config',
-          'config/atomic-config',
+          'config/atomic_modules',
           'config/ldap',
       ],
     },

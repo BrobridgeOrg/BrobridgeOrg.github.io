@@ -82,8 +82,7 @@ enum DataType {
 
 ### *2.1* product.go
 
-可以針對 `Product` 做相關的的 CRUD，還有 `ProductClient` 的註冊。
-
+This object performs CRUD actions on `Product` as well as registration of `ProductClient`
 ```go
 type ProductSetting struct {
 	Name            string                 `json:"name"`
@@ -105,9 +104,9 @@ type ProductClient struct {
 }
 ```
 
-### rule.go
+### *2.2* rule.go
 
-Product 本身可以綁定 rules。
+You may assign rules to data products.
 
 ```go
 type Rule struct {
@@ -126,9 +125,9 @@ type Rule struct {
 }
 ```
 
-## core
+## *3.* core
 
-主要定義 NATS 的 Client 和 Permissions 相關的管理。
+Defines NATs Client as well as access controls.
 
 ```go
 var AvailablePermissions = Permissions{
@@ -167,11 +166,11 @@ type AuthenticateReply struct {
 }
 ```
 
-## adapter
+## *4.* Adapter
 
-主要負責接入 Gravity 的 Event，提供連線和發送事件等相關功能。
+Adapter connects and receives message from data source.
 
-### adapter.go
+### *4.1* adapter.go
 
 ```go
 type AdapterConnector struct {
@@ -193,11 +192,11 @@ type PubAckFuture interface {
 }
 ```
 
-## subscriber
+## *5.* Subscriber
 
-負責管理 Subscription 和 subscriber 等相關資源，讓進入 Gravity 的事件可以往下游發送。
+Responsible for managing subscriptions and subscribers, allowing events to stream further down the road.
 
-### subscription.go
+### *5.1* subscription.go
 
 ```go
 type Subscription struct {
@@ -243,11 +242,11 @@ func (sub *Subscription) Subscribe() error {
 
 ```
 
-## config_store
+## *6.* config_store
 
-儲存 Config 的功能，使用 JetStream Key-Value API 實作。
+`config_store` *stores* config. It uses JetStream Key-Value APIs.
 
-### config_store.go
+### *6.1* config_store.go
 
 ```go
 type ConfigOp int32
@@ -288,11 +287,11 @@ type ConfigStore struct {
 }
 ```
 
-## token
+## *7.* token
 
-負責 Gravity Token 管理相關的服務。
+Manages tokens and other access controls.
 
-### token.go
+### *7.1* token.go
 
 ```
 type TokenSetting struct {

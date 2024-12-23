@@ -110,3 +110,24 @@
     flex-direction: column;
   }
 }
+
+button.contact-button {
+  background-color: #0078d7;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button.contact-button:hover {
+  background-color: #005bb5;
+}
+
+.contact-info {
+  margin-top: 1rem;
+  font-size: 18px;
+  color: #333;
+}
+

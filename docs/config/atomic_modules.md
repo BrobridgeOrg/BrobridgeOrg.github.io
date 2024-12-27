@@ -1,4 +1,4 @@
-# Proprietiery. Atomic Modules 
+# Proprietiery Atomic Modules 
 
 ## *1.* Gravity Subscriber
 

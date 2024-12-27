@@ -1,47 +1,50 @@
----
-sidebar_position: 1
----
+# System Requirements 
+## *1.* Hardware Prerequisites 
 
-# 系統需求 
-## 硬體基本需求
-
-#### VM server 規格(包含 Gravity+staging DB 所需資源)
+### *1.1* Single Node Virtual Machine Specs
+Provided specs below estimate the resource usage for Gravity and staging DB
 
 | Number of nodes | CPUs | Memory (GiB) | Storage (GiB)|
 |------------|------|--------------|--------------|
 |     1      |  12  |     48       |     900      |
 
-* Storage 容量視實際處理量調整, 通常為資料之 2 倍以上。
+* Storage size is adjustable, usually twice the size of the input data 
 
 
 
-#### VM Minimum Requirements for Kubernetes Installation
+### *1.2* VM Specs for Multi-node Kubernetes Installation
 
-| VM node           | 數量| vCPU | Memory (GiB) | Storage (GiB) |
-| ------------------|-----|-------|-------------|---------------|
+| VM node           |Count| vCPU  | Memory (GiB) | Storage (GiB) |
+| ------------------|-----|-------|--------------|---------------|
 | Master node + NFS | 1   | 2     | 4           | 600           |
 | Worker node       | 1   | 8     | 16          | 100           |
 | Windows 跳板機    | 1   | 2     | 4           | 80            |
 
-* Storage 容量視實際處理量調整, 通常為資料之 2 倍以上。
+* Storage size is adjustable, usually twice the size of the input data 
 
 
 
 
 
-## 環境需求
-* 一個 K8S cluster， 可能需要連線至 internet 下載 image
-* 一個內部用可 upload 的 Image Repository (若沒有，需提供所有 worker 的 ssh 帳號)
-* 一個 Linux 跳板機，可以執行 kubectl 工具來管理 K8S cluster，跳板機可為 :
-    * cluster 中某個 master 節點
-    * 或者可連入 cluster master 節點的機器
+## *2.* Environment 
+* A Kubernetes cluster, capable of connecting to internet to pull images.
+* A local image registry (e.g.,Docker, Harbor)
+* A Linux jump server with the correct access rights to operate K8S cluster
 
-## 取得安裝軟體
-Click [here](https://drive.google.com/file/d/1iNOU-T-M3OC59shNI7lkkWZI8Mh-D12x/view?usp=drive_link) to install the official Gravity Image file (影像檔)
 
-Click [here](https://drive.google.com/file/d/1iNOU-T-M3OC59shNI7lkkWZI8Mh-D12x/view?usp=drive_link) to install the depndency files (安裝檔案)
+> :memo: **A jump server could be any one of the following:**
+>
+> A master node in the kubernetes cluster
+> 
+> Any machine that can connect to the master node
 
-寬橋目前提供的安裝檔案結構 :
+## *3.* Acquire sample `.yaml` files and images 
+Click --->  [here](https://drive.google.com/file/d/1iNOU-T-M3OC59shNI7lkkWZI8Mh-D12x/view?usp=drive_link) to install the official Gravity Image file (image files)
+
+Click --->  [here](https://drive.google.com/file/d/1iNOU-T-M3OC59shNI7lkkWZI8Mh-D12x/view?usp=drive_link) to install the depndency files (Sample .yaml)
+
+### *3.1* File Structure
+Below is the file structure provided:
 ```
 ── 00-namespace.yaml
 ├── 10-lab-db

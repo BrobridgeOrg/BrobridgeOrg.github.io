@@ -49,7 +49,7 @@ This architecture treats data as a first-class product and applies product think
 Key principles of data mesh include domain-oriented ownership, self-serve data infrastructure, federated governance, and treating data as a product. 
 This enables scalability, autonomy for teams, and faster decision-making while addressing the challenges of data silos and bottlenecks in traditional centralized models.
 
-### *2.1* Data Domain
+### *2.1* Data Domain {#dd}
 A **data domain** refers to a specific, logically grouped area of data within an organization, typically aligned with business functions or processes such as sales, marketing, or finance. 
 In the context of modern data architectures, like data mesh, a data domain is managed by domain experts who take ownership of the data and treat it as a product. 
 This approach ensures that the data is accurate, reliable, and relevant for its intended users. 

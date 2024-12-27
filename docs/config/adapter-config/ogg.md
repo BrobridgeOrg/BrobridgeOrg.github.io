@@ -1,7 +1,7 @@
 # Oracle Golden Gate to Kafka Adapter
-## `config.toml` Explanation
+## *1.* `config.toml` Explanation
 
-##### Example of `configs/config.toml`
+### *1.1* Example of `configs/config.toml`
 ```toml
 [gravity]
 domain = "default"
@@ -17,7 +17,7 @@ rateLimit = 0
 [source]
 config = "./settings/sources.json"
 ```
-
+### *1.2* Parameters
 | Parameter                  | Description                                                                 |
 |----------------------------|-----------------------------------------------------------------------------|
 | `gravity.domain`           | Sets the Gravity domain                                                    |
@@ -49,9 +49,9 @@ config = "./settings/sources.json"
 
 ---
 
-## `settings.json` Explanation
+## *2.* `settings.json` Explanation
 
-##### Example of `settings/sources.json`
+### *2.1* Example of `settings/sources.json`
 ```json
 {
    "sources": {
@@ -78,7 +78,7 @@ config = "./settings/sources.json"
    }
 }
 ```
-
+### *2.2* Parameters
 | Parameter                              | Description                                                                 |
 |----------------------------------------|-----------------------------------------------------------------------------|
 | `sources.SOURCE_NAME.disabled`         | Whether to disable this source                                              |
@@ -124,7 +124,7 @@ config = "./settings/sources.json"
 
 ---
 
-## Build
+## *3.* Build
 
 To build the adapter image, use the following command:
 ```bash
@@ -133,7 +133,7 @@ podman buildx build --platform linux/amd64 -t hb.k8sbridge.com/gravity/gravity-a
 
 ---
 
-## Log Levels
+## *4.* Log Levels
 
 Log levels can be configured using environment variables.  
 Available levels: **debug**, **info**, **error**.  

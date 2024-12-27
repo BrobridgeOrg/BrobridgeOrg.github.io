@@ -1,8 +1,8 @@
 # Informix DB Adapter
 
-## `config.toml` Explanation
+## *1.* `config.toml` Explanation
 
-##### Example of `configs/config.toml`
+### *1.1* Example of `configs/config.toml`
 ```toml
 [gravity]
 domain = "default"
@@ -25,7 +25,7 @@ config = "./settings/sources.json"
 enabled = false
 path = "./statestore"
 ```
-
+### *1.2* Parameters
 | Parameter                  | Description                                                                 |
 |----------------------------|-----------------------------------------------------------------------------|
 | `gravity.domain`           | Sets the Gravity domain                                                    |
@@ -60,9 +60,9 @@ path = "./statestore"
 
 ---
 
-## `settings.json` Explanation
+## *2.* `settings.json` Explanation
 
-##### Example of `settings/sources.json`
+### *2.1* Example of `settings/sources.json`
 ```json
 {
    "sources": {
@@ -155,7 +155,7 @@ path = "./statestore"
    }
 }
 ```
-
+### *2.2* Parameters
 | Parameter                              | Description                                                                 |
 |----------------------------------------|-----------------------------------------------------------------------------|
 | `sources.SOURCE_NAME.uri`              | Sets the RESTful API URI (e.g., `POST http://127.0.0.1:8080/dataInput`)      |
@@ -189,7 +189,7 @@ path = "./statestore"
 
 ---
 
-## Build
+## *3.* Build
 
 To build the adapter image, use the following command:
 ```bash
@@ -198,7 +198,7 @@ podman buildx build --platform linux/amd64 -t hb.k8sbridge.com/gravity/gravity-a
 
 ---
 
-## Log Levels
+## *4.* Log Levels
 
 Log levels can be configured using environment variables (default: `info`).  
 Available levels: **trace**, **debug**, **info**, **error**.

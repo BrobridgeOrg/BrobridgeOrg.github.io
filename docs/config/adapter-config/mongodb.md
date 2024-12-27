@@ -1,15 +1,15 @@
 # MongoDB Adapter
 
-## Requirements
+## *1.* Requirements
 
 - MongoDB version 3.6 and higher.
 - MongoDB must be in **replica set** or **shard mode**.
 
 ---
 
-## `config.toml` Explanation
+## *2.* `config.toml` Explanation
 
-##### Example of `configs/config.toml`
+### *2.1* Example of `configs/config.toml`
 ```toml
 [gravity]
 domain = "default"
@@ -33,7 +33,7 @@ config = "./settings/sources.json"
 enabled = true
 path = "./statestore"
 ```
-
+### *2.2* Parameters
 | Parameter                  | Description                                                                 |
 |----------------------------|-----------------------------------------------------------------------------|
 | `gravity.domain`           | Sets the Gravity domain                                                    |
@@ -67,9 +67,9 @@ path = "./statestore"
 
 ---
 
-## `settings.json` Explanation
+## *3.* `settings.json` Explanation
 
-##### Example of `settings/sources.json`
+### *3.1* Example of `settings/sources.json`
 ```json
 {
   "sources": {
@@ -96,7 +96,7 @@ path = "./statestore"
   }
 }
 ```
-
+### *3.2* Parameters
 | Parameter                              | Description                                                                 |
 |----------------------------------------|-----------------------------------------------------------------------------|
 | `sources.SOURCE_NAME.disabled`         | Whether to disable this source                                              |
@@ -142,7 +142,7 @@ path = "./statestore"
 
 ---
 
-## Build
+## *4.* Build
 
 To build the adapter image, use the following command:
 ```bash
@@ -151,14 +151,14 @@ podman buildx build --platform linux/amd64 --build-arg="AES_KEY=**********" -t h
 
 ---
 
-## Deploy MongoDB Replica Set Using Docker
+## *5.* Deploy MongoDB Replica Set Using Docker
 
-### Start MongoDB Instances
+### *5.1* Start MongoDB Instances
 ```bash
 docker run -d --name mongo1 -p 27017:27017 mongo --replSet rs0 --bind_ip_all
 ```
 
-### Initiate the Replica Set
+### *5.2* Initiate the Replica Set
 ```bash
 docker exec -it mongo1 mongosh --eval "rs.initiate({
  _id: \"rs0\",
@@ -168,16 +168,16 @@ docker exec -it mongo1 mongosh --eval "rs.initiate({
 })"
 ```
 
-### Test and Verify the Replica Set
+### *5.3* Test and Verify the Replica Set
 ```bash
 docker exec -it mongo1 mongosh --eval "rs.status()"
 ```
 
 ---
 
-## Deploy `gravity-adapter-mongodb` on Kubernetes
+## *6.* Deploy `gravity-adapter-mongodb` on Kubernetes
 
-### Deploy the Adapter
+### *6.1* Deploy the Adapter
 1. Modify `GRAVITY_ADAPTER_MONGODB_SOURCE_SETTINGS` in `samples/gravity-adapter-mongodb.yaml` with the desired settings.
 2. Apply the configuration:
    ```bash
@@ -188,7 +188,7 @@ docker exec -it mongo1 mongosh --eval "rs.status()"
    kubectl --namespace <my-namespace> get pods
    ```
 
-### Enable MongoDB TLS Connections
+### *6.2* Enable MongoDB TLS Connections
 1. Create a config map for the CA certificate:
    ```bash
    kubectl --namespace <your-namespace> create configmap ca-config-map --from-file=ca.crt=<path-to-ca.crt>

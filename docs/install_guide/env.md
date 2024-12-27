@@ -1,17 +1,10 @@
----
-sidebar_position: 2
----
+# Context
 
+In the next few chapters, all the example operations are performed in the provided context.
 
-# 操作情境
-
-
-
-本手冊將使用下方情境說明 Gravity 相關指令與 Atomic 模組的用法。
-
-- 假設來源的資料庫為MSSQL、目的資料庫為MySQL。
+Assume our data source came from MSSQL, and we are loading our data into a target (downstream) database MySQL
 ![image](/img/env1.png)
 
 
-- 下圖顯示 Atomic 所包含的概略資料流程 (Atomic flow)。其中將以來源資料庫的 `bdl_id` 欄位判斷進行資料表切割處理，並透過 MySQL 模組寫入目標資料庫。
+The figure below depicts a **Atomic Flow**, where we use `bdl_id` as basis to perform partition on data tables. We then use MySQL module to insert data into database.
 ![image](/img/env2.png)

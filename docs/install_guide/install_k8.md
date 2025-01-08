@@ -1,4 +1,4 @@
-# Kubernetes Deployments
+# Prepare Kubernetes
 
 ## *1.* Import Images
 

@@ -1,8 +1,8 @@
 # Postgre SQL Adapter
 
-## `config.toml` Explanation
+## *1.* `config.toml` Explanation
 
-##### Example of `configs/config.toml`
+### *1.1* Example of `configs/config.toml`
 ```toml
 [gravity]
 domain = "default"
@@ -22,7 +22,7 @@ config = "./settings/sources.json"
 enabled = true
 path = "./statestore"
 ```
-
+### *1.2* Parameters
 | Parameter              | Description                                                      |
 |------------------------|------------------------------------------------------------------|
 | `gravity.domain`       | Set the gravity domain                                          |
@@ -38,7 +38,7 @@ path = "./statestore"
 | `store.enabled`        | Whether to mount a persistent volume (for state storage)       |
 | `store.path`           | Path for mounting the persistent volume                        |
 
-> **INFO**
+> :bulb: **INFO**
 >
 > The `config.toml` settings can be provided via environment variables. The naming convention is as follows:
 > `GRAVITY_ADAPTER_POSTGRES_[SECTION]_[KEY]`
@@ -52,9 +52,9 @@ path = "./statestore"
 >   value: 192.168.0.1
 > ```
 
-## `settings.json` Explanation
+## *2.* `settings.json` Explanation
 
-##### Example of `settings/sources.json`
+### *2.1* Example of `settings/sources.json`
 ```json
 {
     "sources": {
@@ -86,7 +86,7 @@ path = "./statestore"
     }
 }
 ```
-
+### *2.2* Parameters
 | Parameter                        | Description                                               |
 |----------------------------------|-----------------------------------------------------------|
 | `sources.SOURCE_NAME.disabled`   | Whether to disable this source                            |

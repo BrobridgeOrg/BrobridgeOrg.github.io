@@ -1,103 +1,77 @@
----
-sideBar_position: 1
----
-
 # Why Gravity?
 
-## 摘要
+## *1.* Abstract
 
-寬橋 **Gravity** 是一款現代化具備即時資料傳輸與事件驅動架構的數據中台解決方案，專為滿足高效能、高可擴展性和分散式系統需求而設計。
+**Gravity** by Brobridge is a modern data middleware solution designed to meet the demands of high performance, scalability, and distributed systems with real-time data transmission and event-driven architecture. With the rapid advancement of digital transformation and cloud-native applications, traditional messaging middleware solutions such as IBM MQ, TIBCO EMS, Apache ActiveMQ, and JMS struggle to handle the growing complexity of enterprise needs. Brobridge Gravity, with its emphasis on real-time data transmission, event-driven architecture, and efficient integration, has emerged as a strong contender for the next generation of data infrastructure.
 
-隨著數位轉型與雲端原生應用的快速發展，傳統訊息中介軟體（如 IBM MQ、TIBCO EMS、Apache ActiveMQ 和 JMS）逐漸難以應對日益複雜的企業需求。
+Similar to modern messaging systems like Apache Kafka, Gravity leverages a distributed architecture to achieve high-efficiency transmission. However, Gravity emphasizes flexibility and low-barrier integration, enabling enterprises to implement real-time data processing and flow for applications more effortlessly.
 
-而 **Brobridge Gravity** 以其專注於實時資料傳輸、事件驅動架構與高效整合的能力，成為下一代資料基礎設施的有力競爭者。
+Gravity is designed to address the data processing challenges enterprises face during digital transformation, maximizing the value of data and empowering engineering teams with greater productivity and innovation.
 
-與 Apache Kafka 等現代訊息系統相似，Gravity 也利用分散式架構來實現高效傳輸。然而，Gravity 強調靈活性與低門檻整合，讓企業能更輕鬆地實現應用程式的即時資料處理與流動。
+---
 
-Gravity 是為了解決企業在數位化轉型過程中的資料處理挑戰而打造，讓資料的價值最大化，為工程團隊提供更強的生產力和創新空間。
+## *2.* Conventional Data Middleware
+
+### Monolithic Architecture
+
+In a centralized system, source data is processed in one location, and its speed is limited by the host’s performance, often requiring high-spec hardware to maintain efficiency. As data demands grow, significant expenses are incurred to upgrade hardware. Additionally, data must be processed in batch integrations, with large-scale data transfers causing longer update times.
+
+![image](/img/why-gravity/flowchart0.jpg)
+
+## *3.* Gravity Features
+
+### *3.1* Distributed Architecture
+
+Distributed systems, widely adopted in Silicon Valley software industries, are designed to ensure high availability and fault tolerance. A key benefit of distributed architecture is horizontal scalability, which allows businesses to expand software services with ease. Brobridge brings this cutting-edge technology to data governance, and Gravity leverages its benefits to achieve high availability, fault tolerance, and scalability.
+
+As illustrated below, Gravity separates "read" and "write" operations (a.k.a. CQRS) from diverse data sources, including various message queues, SQL, and NoSQL databases, reducing system runtime pressure.
+
+![image](/img/why-gravity/flowchart1.jpg)
+
+Distributed architecture not only enables read-write separation but also disperses the load of complex data pipeline processing. Gravity segments data into **Data Products (DP)** to supply data to **Atomic** (a Brobridge-developed ETL tool) or other post-processing services. These pipelines allocate computational resources across multiple hosts as needed, achieving a distributed architecture. Moreover, in cases of unexpected component failures, Gravity quickly establishes new services to rectify errors, ensuring data accuracy and minimizing downtime.
 
 
-## 仿間數據中台
+### *3.2* Data Product
 
-### 單一系統架構
+The **Data Product (DP)** is a cornerstone of Brobridge Gravity. By organizing incoming data into customizable, serviceable products, Gravity allows front-end database backups, downstream processing, or external applications to access data through its API. 
 
-將來源資料集中處理，速度會被主機的效能限制，並且需要高規格硬體來維持效能。若是資料需求日漸增大，需要花費大量的經費購買更高規格硬體來滿足需求。
-此外，資料處理需要預約將其批次整合，一次性的大量傳輸，意味者更新資料需要花較長的時間處理。
+![image](/img/why-gravity/flowchart2.jpg)
 
-![image](/img/why-gravity/intro1.jpg)
 
-## Gravity 特色
+Data Products can simultaneously provide data to multiple services while supporting subscriptions from multiple products, forming a **Data Mesh** architecture. Unlike traditional ETL systems, Gravity minimizes pressure on the data source by managing subscriptions independently.
 
-### 分散式架構
 
-分散式系統一個被許多美國矽谷軟體業廣泛使用的架構，其最主要的目的是保持軟體的高可用性 (High Availiablility) 與容錯能力 (Fault Tolerance) 。
-分散式架構另外一個特點是有平行擴展的能力，而讓企業能容易的擴張軟體服務。寬橋將此尖端科技引入資料治理，而今日，Gravity 利用它的好處，達到了資料的高可用性、容錯能力與平行擴展的效益。
+### *3.3* Event-Driven Architecture
 
-![image](/img/why-gravity/intro2.jpg)
+A common pain point in the industry is the slow pace of business processes, often due to traditional middleware's reliance on batch processing by database administrators (DBAs). This involves clarifying which data needs to be processed and scheduling batch operations, which leads to delays in large-scale data transfers.
 
-注意到上圖，Gravity 將多種資料來源，包含各種 Message Queue, SQL 與 NoSQL 資料庫，以「讀」與「寫」分離 (a.k.a CQRS)，分散了系統執行時的壓力。
+Gravity employs **Change Data Capture (CDC)** technology to enable real-time data transmission and synchronization without requiring pre-scheduled batch processes. Users only need to define the data to be synchronized, and Gravity handles updates—including additions, modifications, and deletions—in real-time, whether for synchronization to databases or computation, achieving immediate results.
 
-分散式架構不僅將讀寫分離，也同時將每個複雜的資料管線處理效能分散。Gravity 將資料切分成 Data Product (DP) 提供資料給 Atomic、寬橋開發的資料管線 ETL 工具、或是其他後處理服務。
 
-這些資料管線能因應需求讓其中的運算資源切分成不同的運算主機，因以達到分散架構的效果。
+### *3.4* Atomic
 
-也因分散式架構的關係，Gravity 的各個元件若是因為不可預期的因素而發生錯誤，Gravity 能及時的將新的服務建立去排除錯誤，確保資料正確性與降低系統的閑置時間 (down time) 。
-
-### Data Product
-
-Data Product 又稱資料產品，是寬橋 Gravity 的主要特色之一，Gravity 數據中台將讀進來的資料依照自訂的需求建立成一個可服務的資料。
-
-好處在於，無論是前端資料庫備份、後續處理還是外部程式，都可以透過 Gravity API 去將資料訂閱、使用。
-
-![image](/img/why-gravity/intro3.jpg)
-
-Data Product (DP) 不僅可以同時將資料提供訂閱給多種服務，也可以同時有多的服務訂閱多個資料產品，形成 Data Mesh （資料網路）的架構。相異於傳統 ETL，資料產品的訂閱不會將壓力落在資料來源身上
-
-### 事件驅動
-
-業界常見的使用者痛點，往往與業務流程速度慢有關係，然而這個問題與傳統中台的傳輸效能無關，而是因為基於單一系統架構，
-
-資料需要透過 DBA 去操作，釐清要輸入的資料有哪些，再去安排中台的批次資料處理，
-
-而這樣會造成慢是因為每次批次處理，累計大量的資料需要較長的時間傳輸。儘管速度再快，也不及於即時資料傳輸的效率。
-
-Gravity 利用 CDC (Change Data Capture) 的技術，將資料即時傳輸、同步，無需預約批次資料處理。
-
-相異於傳統的中台系統，使用者不需要特別設定每筆資料的輸入與輸出，只要將希望同步的資料定義好，
-
-Gravity 就會將有做更新的資料，無論是新增，修改，刪除，及時的依據需求對資料做處理，不管是要將這些資料同步到資料庫或是做運算等等，達到即時的效果。
-
-### Atomic
-
-搭配著寬橋專業的技術諮詢，以及自家開發的套件與模組，Atomic 擁有友善的圖形界面，利用拖拉式的方法呈現出水管型態的資料，以便非技術背景人員做業務邏輯開發。
+Complemented by Brobridge’s technical consultancy and proprietary modules, **Atomic** features an intuitive graphical interface, allowing users to design business logic workflows through drag-and-drop operations. 
 
 ![image](/img/why-gravity/intro4.png)
 
-Atomic 包含多元的內建模組，如果內建模組無法滿足需求，想要更客製化的用戶，Atomic 也可以另外下載外部開發的套件，或是直接利用 JavaScript 下去做編輯。
-
-### 多層運算處理
-
-寬橋在面對業務需求的情境中，常見的要求莫過於多層次以及多工的運算及服務，
-
-如下圖所見情境，許多情況客戶希望能將資料做分層處理，並且對每層處理的結果加以備份，若是沒有相似於中台的解決方案，會使得他們倍感頭痛。
+Atomic includes a wide range of built-in modules, and for users requiring more customization, external modules can be downloaded, or JavaScript can be used for tailored solutions.
 
 
-在傳統中台系統中，要達到上述分層處理及備份的效果會需要先將資料匯入至一個資料庫，再讓中台把它匯出去重複做使用，增加系統的負擔。Gravity 不僅能輕易地達到這個效果，
+### *3.5* Multi-Layered Computation
 
-也能同時利用分散式架構的優勢，大幅降低系統的負擔，並且不費力的將資料處理達到多層運算的效果
-
-![image](/img/why-gravity/intro5.jpg)
-
-## 總結
-
-寬橋 Gravity 是一款創新且高效的分散式資料傳輸與事件驅動架構解決方案，專為現代企業的數位化需求而設計。
-
-相較於傳統訊息中介軟體，Gravity 強調即時性、高擴展性和靈活整合，並藉由分散式架構實現高可用性與容錯能力，讓資料處理更加高效與穩定。
-
-其核心特色包括 **Data Product** 的創新應用、CDC 技術支持的即時資料同步，以及可視化開發工具 Atomic，使企業能快速部署並應對複雜的資料治理需求。
-
-此外，Gravity 的多層運算處理能力，結合分散式架構的優勢，大幅降低系統負擔，同時提升運算效能與可靠性。
-
-透過這些技術優勢，Gravity 為企業打造靈活、高效的資料基礎設施，解決傳統中台的效率瓶頸，釋放數據價值，並助力企業在數位轉型過程中脫穎而出。 
+In business scenarios, multi-tiered and parallel processing of data is a common requirement. For example, customers often want data to be processed in layers, with results from each layer backed up for reuse in other applications. Without a middleware solution, addressing such requirements can be challenging.
 
 
+![image](/img/why-gravity/flowchart3.jpg)
+
+Traditional middleware systems require data to be imported into a database first and then exported for use, increasing system load. Gravity not only meets these needs effortlessly but also leverages its distributed architecture to significantly reduce system strain while achieving multi-layered computation seamlessly.
+
+---
+
+## TL;DR
+
+Brobridge Gravity is an innovative and efficient distributed data transmission and event-driven architecture solution, designed to meet modern enterprises’ digital needs. Compared to traditional messaging middleware, Gravity emphasizes real-time capabilities, scalability, and flexible integration. By leveraging distributed architecture, it ensures high availability, fault tolerance, and efficient data processing.
+
+Key features include the innovative application of **Data Products**, real-time data synchronization via CDC, and the visual development tool Atomic, enabling businesses to quickly deploy solutions and address complex data governance challenges. Furthermore, Gravity’s multi-layered computation capabilities, combined with the benefits of distributed architecture, reduce system burden while enhancing computational efficiency and reliability.
+
+With these technological advantages, Gravity equips enterprises with a flexible, efficient data infrastructure, overcoming the efficiency bottlenecks of traditional middleware, unlocking the value of data, and enabling businesses to excel in digital transformation.

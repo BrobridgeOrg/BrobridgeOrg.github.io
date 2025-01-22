@@ -1,13 +1,10 @@
-# Gravity 部署流程
+# Gravity Deployment 
 
+In this example, we are going to demonstrate how Gravity is installed in a clean Kubernetes environment.
 
-本節將示範如何在一個乾淨的 K8s cluster 環境展開一個全新的 Gravity 部署。
+## *1.* Configmap
 
-## 檢查 Gravity 設定檔 (YAML 格式)
-
-本產品安裝需要的設定檔如下：(檔案名稱為範例，實際名稱可能有所不同)
-
-### Configmap
+Below is an example of a Gravity configuration file.
 
 **03-bbg-configmap.yaml**
 
@@ -44,7 +41,7 @@ data:
 > * 格式為: 帳號/Repository名稱.git
 > * 此例的 GIT_URL 直接透過 k8s service name 與 container port 內部叢集網路連接而非透過 nodePort
 
-### Database 密碼 secret 設定
+## *2.* Database Password and Secret
 > * 為了避免直接 Password 以明文出現在 yaml 上, 故須透過寬橋提供的 pwd_encrypt 工具來產生secret
 > * 指令: ``$ echo -n $(./pwd_encrypt --plaintext 'MyPassword') | base64 -w 0``
 >   * 以下將以 ``1qaz@WSX`` 為例作為 ``MyPassword``
@@ -65,7 +62,7 @@ data:
 
 * ``OGU1Y2E4NDM5ZGRlYmJhYzliZjJiODNjYWY0YmVmN2E=`` 明文為 ``1qaz@WSX``
 
-### NATS (StatefulSet & Service)
+## *3.* NATS (StatefulSet & Service)
 **05-bbg-nats.yaml**
 
 > **StatefulSet 重點**：確認 NATS 叢集間的路由設定是否正確
@@ -87,7 +84,7 @@ data:
       port: 6222
 ```
 
-### Dispatcher
+## *4.* Dispatcher
 
 **06-bbg-dispatcher.yaml (StatefulSet)**
 
@@ -102,7 +99,7 @@ data:
               value: "default"
 ```
 
-### Adapter
+## *5.* Adapter
 
 **07-bbg-adapter-mssql.yaml (StatefulSet)**
 
@@ -132,7 +129,7 @@ data:
 > **重點**：在 “env“ 定義的 DB 密碼環境變數名稱，必須與 “source“ 的名稱一致 (規則：變數名稱為大寫再加上 ”_PASSWORD”)
 ![image](/img/deployment1.png)
 
-### Atomic
+## *6.* Atomic
 
 **08-bbg-atomic.yaml (Deployment & Service)**
 
@@ -165,7 +162,7 @@ git push -u origin master --force
 cd ../
 ```
 
-### 配置 Configmap & Secret
+## *7.* Configmap & Secret
 
 > <mark>**注意**：以下指令中所有.yaml 檔皆為為範例名稱，可能會與實際檔案名稱不同</mark>
 
@@ -176,7 +173,7 @@ sed -i 's/GIT_TOKEN: .*/GIT_TOKEN: 4adc8cd4687c92769349df9fbc878e955b782b0a/' 03
 kubectl apply -f 03-bbg-configmap.yaml  -f 04-bbg-secret.yaml
 ```
 
-## 部署 NATS
+## *8.* Install NATs Cluster 
 
 執行以下指令
 
@@ -197,7 +194,7 @@ kubectl -n bbg-gravity get pod
 kubectl -n bbg-gravity get svc 
 ```
 
-## 部署 Dispatcher
+## *9.* Install Dispatcher
 
 執行以下指令
 
@@ -212,16 +209,15 @@ kubectl apply -f 06-bbg-dispatcher.yaml
 kubectl -n bbg-gravity get pod
 ```
 
-## 建立與管理 Data Product
+## *10.* Data Product
 
 章節二已定義 Data Product 為 Gravity 的基本資料集 (Data Set) 處理單元，本章將介紹 Data Product 的實際內容以及其建立與管理的方式。
 
-### Data Product 與來源資料庫的關係說明
-
+### *10.1* Data Product relationships 
 - 當資料庫有任何異動時，對應的 CDC 模組將會產生 CDC 事件 (event)。
 - 經由 Gravity Adapter，CDC event 將會轉為 Gravity 能辨識的格式，讓 Gravity 系統進行進一步處理以產生 Data Product。
 
-### 建立 Data Product
+### *10.2* Create Data Product
 
 使用者可透過如下指令將上述由 CDC 機制自資料庫取得的資料 (此時以 event 形式呈現) 進一步轉換為 Data Product。
 
@@ -236,7 +232,7 @@ kubectl -n bbg-gravity get pod
 >
 > 寬橋提供 table-scanner_linux_amd64 工具，用來掃描來源 DB 並產生 JSON 格式的 table schema (Tips: 若來源 DB 為 oracle，table-name 須全部使用大寫字母。)
 
-### 由 Event 產生 Data Product 的內容
+### *10.3* Create Data Product from event
 
 前述 CDC events 透過 Adapter 轉為 Gravity 能辨識的格式後，可透過指定的規則 (Ruleset) 將 events 做進一步處理以輸出為對應 Data Product 的內容。
 
@@ -266,28 +262,11 @@ return {
 >
 > handler.js 可用來過濾、調整、或組合出新欄位並輸出為符合 Data Product schema 的資料，例如：
 
-### 管理 Data Product
+### *10.4* Manage Data Product
 
-使用者可透過 gravity-cli 指令的 `list`、`delete`、`info`、`update` 等子命令來針對 Data Product 以及 Ruleset 進行更進階的管理。
+See [Gravity CLI](../cli.md) for more detailed guide
 
-- Data Product 更新範例
-
-``` 
-/gravity-cli product update misrc --desc="misrc dp" --enabled \
---schema=./schema.json -s lab-gravity-nats:4222
-```
-
-- Ruleset 新增範例
-
-``` 
-/gravity-cli product ruleset add misrc misrcDelete --enabled \
---event=misrcDeleteEvent --method=delete --handler=./handler.js \
---schema=./event_schema.json -s lab-gravity-nats:4222
-```
-
-- 更進一步的操作方式可參考 Appendix 。
-
-## 部署 Adapter
+## *11.* Install Adapter
 
 在建立完 Data Product 之後, 即可執行以下指令掛載對應資料庫的 CDC Adapter 以取得資料庫的 CDC 資料。
 
@@ -307,7 +286,7 @@ kubectl -n bbg-gravity get pod
 kubectl -n bbg-gravity logs lab-adapter-mssql-0
 ```
 
-## 部署 Atomic
+## *12.* Install Atomic
 
 執行以下指令
 

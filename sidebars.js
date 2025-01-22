@@ -51,6 +51,14 @@ const sidebars = {
           'config/ldap',
       ],
     },
+    {
+      type: 'category',
+      label: 'Atomic',
+      items: [
+          'atomic/atomic_guide',
+          'atomic/atomic-batch-feature',
+      ],
+    },
     'cli',
     ],
     apiSidebar: [

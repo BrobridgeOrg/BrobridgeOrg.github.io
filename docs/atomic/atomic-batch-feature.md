@@ -2,60 +2,157 @@
 
 Edited by Enoch, Jan 22, 2025
 
-## *1.* Atomic相關服務說明
+## 相關服務簡介
 
-- atomic-gravity: 為atomic頁面中那些給gravity使用的component, 像是subscriber, publish, server…etc, 可視為atomic的client端
-- node-gravity-sdk: 為上述的sdk, 主要實作與gravity中nats等元件的操作
-- atomic: 為gravity atomic 點開連結看到的前端頁面
+### atomic-gravity
 
-## *2.* Atomic相關服務安裝與環境設定
+- 作為 Atomic 頁面的 Gravity 客戶端元件集合
 
-git clone 上述三份專案於local上
+- 包含 subscriber、publish、server 等核心功能組件
 
-- atomic
-[https://github.com/BrobridgeOrg/atomic.git](https://github.com/BrobridgeOrg/atomic.git])
-- atomic-gravity
-  [https://github.com/BrobridgeOrg/atomic-gravity.git](https://github.com/BrobridgeOrg/atomic-gravity.git)
-- node-gravity-sdk
-  [https://github.com/BrobridgeOrg/node-gravity-sdk.git](https://github.com/BrobridgeOrg/node-gravity-sdk.git)
+### node-gravity-sdk
 
-- 預期的資料夾位置
-- /brobridge
-    - /atomic
-    - /atomic-gravity
-    - /node-gravity-sdk
+- atomic-gravity 的基礎開發套件
 
-- 調整各自專案參考的pacakge 位置(package.json)
+- 主要實作與 Gravity 中 NATS 等元件的操作介面
 
-1. atomic-gravity: 於dependencies中加入: "gravity-sdk": "file:../node-gravity-sdk",
-2. node-gravity-sdk:
-3. atomic: 安裝時會在$HOME目錄下產生.node-red資料夾, 所以需修改當中的dependencies來指向對應參考的package位置增加 "atomic-gravity": "file:../brobridge/atomic-gravity",
+### atomic
 
-## *3.* Atomic Batch 功能使用介紹
+- Gravity Atomic 的前端介面實作
+- 提供使用者直觀的操作界面
 
-![image](/img/atomic-batch1.png)
-上述設定完成之後, 可於atomic專案下使用npm start啟動專案
-於左邊tab中選取components: subscriber、function、mssql、gravity acknowledge..etc
+## 環境建置指南
+### *1.* 專案下載
+請將以下三個專案 clone 到本地環境：
 
-- gravity subscriber: 當中可以設定已建立好的nats 位置以及data product和batch的size
-- function: 主要將收到的資料以批次的形式整理好insert近資料庫的實作程式碼
-- mssql execute: 主要設定欲insert入的資料庫設定
-- gravity acknowledge: 主要是用來當成功寫入批次資料至資料庫時, 會發起一個ack 通知nats可以繼續送下一批次的資料了, 且通常需要搭配gravity subscriber中的manual ack才有作用
-- debug: 可將串接到此節點的資料以debug mode方式呈現在右邊欄位上
-- catch: 可以監聽某個node上的狀態, 如果有錯誤即可被捕獲並與acknowldege做進一步的搭配回傳nak至nats上來重新索取已操作的失敗的該批資料
+```
+git clone https://github.com/BrobridgeOrg/atomic.git
+git clone https://github.com/BrobridgeOrg/atomic-gravity.git
+git clone https://github.com/BrobridgeOrg/node-gravity-sdk.git
+```
 
-## *4.* Atomic Batch 功能預期行為
+### *2.* 目錄結構
+範例目錄結構：
+```
+/brobridge/
+├── atomic/
+├── atomic-gravity/
+└── node-gravity-sdk/
+```
 
-- 假設批次的量為1000, 並於subscriber中設定manual ack, 且收到之後為此批次給予manual ack, 其目前預期正常行為是:
-    - 如果單純收取資料不落地至任何資料庫(未經過function & mssql), 則資料筆數與順序會與原資料相同
-    - 如果取完資料並且有落地資料庫, 會以批次的方式成功寫入資料庫:
-        - 但是如果再重新送一批舊的資料, 則會因duplicate data error而導致寫入失敗, 此時subscriber也會觸發重傳機制, 會一直送出該批相同的資料
-- 也因為開發批次的功能之後, 整個取資料的資料結構和邏輯也有修改, 除了上述的功能開發之外, 也修改了對單筆資料的存取, 其目前預期正常行為是:
-    - 如果取單筆資料時並不落地, 結束後則數量與順序會與原資料相同
-    - 如果取單筆資料時落地至資料庫的話, 則會以每筆資料insert的方式寫入至資料庫
-        - 但是如果再寫入已有的資料時, 則會因duplicate data error而導致寫入失敗, 此時subscriber也會觸發重傳機制, 會一直送出該筆相同的資料
+### *3.* 相依套件設定
 
-## *5.* Atomic Batch 測試情境
+- atomic-gravity 設定:
+在 package.json 的 dependencies 中添加：
 
-目前希望能測試更大量的資料量, 10萬, 100萬, 情境是單純寫入資料庫即可
-如果成功則寫入資料庫, 失敗則會繼續回傳該批次的檔案
+
+```
+{
+  "dependencies": {
+    "gravity-sdk": "file:../node-gravity-sdk"
+  }
+}
+```
+
+- atomic 設定:
+當安裝完成後，系統會在使用者家目錄下建立 .node-red 資料夾。需要修改該資料夾中的 dependencies 設定：
+
+```
+{
+  "dependencies": {
+    "atomic-gravity": "file:../brobridge/atomic-gravity"
+  }
+}
+```
+
+這樣的配置可確保各服務之間的正確相依關係。
+
+## Atomic Batch功能使用指南
+
+### 專案啟動
+
+  完成環境配置後，可在 atomic 專案目錄下執行以下指令啟動服務：
+
+```
+npm start
+```
+
+### 元件說明
+### *1.* Gravity Subscriber
+
+- 用於設定已建立的 NATS 連線位置
+
+- 可配置 Data Product 設定
+
+- 可設定批次處理的大小（Batch Size）
+
+- 支援 Manual Acknowledgement 模式
+
+### *2.* Function
+- 主要用於實作批次資料處理邏輯
+
+- 負責將接收到的資料整理成適合資料庫插入的格式
+
+- 可編寫自定義的資料轉換邏輯
+
+### *3.* MSSQL Execute
+
+- 用於配置目標資料庫的連線設定
+
+- 負責執行資料庫插入操作
+
+- 支援批次資料的寫入
+
+### *4.* Gravity Acknowledge
+
+- 當批次資料成功/失敗寫入資料庫後，發送ack/nak訊號
+
+- 通知可以繼續發送下一筆/批或原本的資料
+
+- 需要配合 Gravity Subscriber 的 Manual Acknowledgement 模式使用
+
+- 確保資料處理的可靠性
+
+### *5.* Debug
+
+- 可將節點間傳遞的資料以除錯模式顯示
+
+- 資料會即時呈現在右側面板
+
+- 有助於開發階段的問題排查
+
+### *6.* Catch
+
+- 用於監控特定節點的執行狀態
+
+- 可捕獲節點執行過程中的錯誤
+
+- 當發生錯誤時，可與 Acknowledge 節點配合
+
+## 操作流程
+
+在左側標籤頁中選擇所需元件,依需求配置各個元件的參數將元件進行適當的連接,測試並監控資料流轉過程,這些元件的合理組合可建構出一個可靠的批次資料處理流程，能夠確保資料的完整性和處理的可靠性。
+
+## Atomic Batch 功能說明
+
+### 批次處理模式
+- 基本設定
+  - 可在 Subscriber 中設定批次大小（例如：1000 筆）
+  - 勾選為 Batch Mode
+  - 支援 Manual Acknowledgement 模式
+
+- 純資料接收模式
+  - 當僅使用 Subscriber + Acknowledgement 接收資料時：
+  - 保證資料筆數的完整性
+  - 維持原始資料的順序
+
+- 資料庫寫入模式
+  - 當配合 Subscriber + Function + MSSQL 組件使用時：
+    - 支援批次資料欄位更新與資料庫寫入
+  - 搭配 Catch + Acknowledgement 可監控該 MSSQL組件:
+    - 預設支援操作失敗資料重傳機制
+    - 可自定義錯誤處理邏輯
+
+## 單筆處理模式
+
+處理行為與上述批次處理模式相同

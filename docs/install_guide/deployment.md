@@ -34,17 +34,20 @@ data:
   GIT_TOKEN: 61bc6c9a2c17fe69c81fd5b0a460402637e76b8d
   GIT_URL: gitea:3000
 ```
-> **提示** ：上述有關資料庫連接設定的欄位值依照實際設定而有所不同
-> * GIT_TOKEN: 由 gitea-token.txt 的 Gitea 連線 Token 取代
-> * GIT_USER: 由上一章節安裝 gitea 時所註冊的帳號取代
-> * GIT_REPO_URL: 由上一章節安裝 gitea 時所註冊的帳號和Repository名稱取代
-> * 格式為: 帳號/Repository名稱.git
-> * 此例的 GIT_URL 直接透過 k8s service name 與 container port 內部叢集網路連接而非透過 nodePort
+> :bulb:**TIP**
+> * GIT_TOKEN: Use gitea-token.txt instaed of having the token in the yaml file.
+> * GIT_USER: Use the account created fromt he last chapter
+> * GIT_REPO_URL: Replace the url with `user/repo_name.git`
+> * GIT_URL: Connects directly through kubernetes service name and container port to communicate
 
 ## *2.* Database Password and Secret
-> * 為了避免直接 Password 以明文出現在 yaml 上, 故須透過寬橋提供的 pwd_encrypt 工具來產生secret
-> * 指令: ``$ echo -n $(./pwd_encrypt --plaintext 'MyPassword') | base64 -w 0``
->   * 以下將以 ``1qaz@WSX`` 為例作為 ``MyPassword``
+> :bulb:**TIP**
+>
+> Use pwd_encrpyt tool provided by Brobridge to create secret, avoiding password being exposed in the yaml file
+>
+> Enter the following: `$ echo -n $(./pwd_encrypt --plaintext 'MyPassword') | base64 -w 1`
+>
+> `1qaz@WSX` is used as `MyPassword`
 
 **04-bbg-secret.yaml**
 
@@ -140,7 +143,7 @@ data:
 
 ### 上傳 flow 至 Gitea
 
-取得 Gitea 的連線 Token：
+Acquire Gitea token
 
 ``` 
 cat gitea-token.txt
@@ -175,8 +178,7 @@ kubectl apply -f 03-bbg-configmap.yaml  -f 04-bbg-secret.yaml
 
 ## *8.* Install NATs Cluster 
 
-執行以下指令
-
+Perform the following command
 
 ``` 
 kubectl apply -f 05-bbg-nats.yaml
@@ -196,8 +198,7 @@ kubectl -n bbg-gravity get svc
 
 ## *9.* Install Dispatcher
 
-執行以下指令
-
+Perform the following command
 
 ``` 
 kubectl apply -f 06-bbg-dispatcher.yaml 

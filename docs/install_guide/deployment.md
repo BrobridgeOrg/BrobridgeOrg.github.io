@@ -63,12 +63,12 @@ data:
     db_target_mysql_password: OGU1Y2E4NDM5ZGRlYmJhYzliZjJiODNjYWY0YmVmN2E=
 ```
 
-* ``OGU1Y2E4NDM5ZGRlYmJhYzliZjJiODNjYWY0YmVmN2E=`` 明文為 ``1qaz@WSX``
+* ``OGU1Y2E4NDM5ZGRlYmJhYzliZjJiODNjYWY0YmVmN2E=`` is originally ``1qaz@WSX``
 
 ## *3.* NATS (StatefulSet & Service)
 **05-bbg-nats.yaml**
 
-> **StatefulSet 重點**：確認 NATS 叢集間的路由設定是否正確
+> Make sure NATs cluster routing are correct
 
 ``` 
   replicas: 3

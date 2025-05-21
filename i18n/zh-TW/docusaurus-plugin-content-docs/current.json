@@ -42,5 +42,21 @@
   "sidebar.faqSidebar.doc.Gravity Portal": {
     "message": "Gravity Portal",
     "description": "The label for the doc item Gravity Portal in sidebar faqSidebar, linking to the doc en/faq/gravity-portal"
+  },
+  "sidebar.docSidebar.category.Configurations": {
+    "message": "Configurations",
+    "description": "The label for category Configurations in sidebar docSidebar"
+  },
+  "sidebar.docSidebar.category.Adapter Configurations": {
+    "message": "Adapter Configurations",
+    "description": "The label for category Adapter Configurations in sidebar docSidebar"
+  },
+  "sidebar.docSidebar.category.Atomic": {
+    "message": "Atomic",
+    "description": "The label for category Atomic in sidebar docSidebar"
+  },
+  "sidebar.apiSidebar.category.Gravity-SDK": {
+    "message": "Gravity-SDK",
+    "description": "The label for category Gravity-SDK in sidebar apiSidebar"
   }
 }

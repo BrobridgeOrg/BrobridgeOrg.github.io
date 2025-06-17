@@ -1,8 +1,8 @@
-# Use Cases
+# Application Scenarios
 
-**Gravity** can immediately resolve a variety of issues in existing database systems without the need to modify applications or build complex, hard-to-maintain database clusters. Data system architects can adopt different Gravity reference architectures based on use cases, freely combining them into tailored solutions.
+**Gravity** can immediately resolve a variety of issues in existing database systems without the need to modify applications or build complex, hard-to-maintain database clusters. Data system architects can adopt different Gravity reference architectures based on application scenarios, freely combining them into tailored solutions.
 
-## Common Use Cases
+## Common Application Scenarios
 
 - [Legacy database systems under heavy load](#legacy-database-systems-under-heavy-load)  
 - [Massive data writes in a short time](#massive-data-writes-in-a-short-time)  
